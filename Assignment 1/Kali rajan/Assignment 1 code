@@ -1,0 +1,48 @@
+int gas=A0;
+int temp=A1;
+int pir=10;
+int buzz=11;
+int red=2;
+int green=3;
+void setup()
+{
+  pinMode(gas,INPUT);
+  pinMode(temp,INPUT);
+  pinMode(pir,INPUT);
+  pinMode(buzz,OUTPUT);
+  pinMode(red,OUTPUT);
+  pinMode(green,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  //gas value calculate
+  float gaslevel=analogRead(gas);
+  Serial.print("Gas Value:");
+  Serial.println(gaslevel);
+  
+  //temperature value calculate
+  float templevel=analogRead(temp);
+  float value =  templevel*(5.0 / 1024.0);
+  float cel = value*100;
+  Serial.print("Temperature Value in celcius:");
+  Serial.println(cel);
+  
+  //pir value calculate
+  int pirlevel=digitalRead(pir);
+  Serial.println("Motion state:");
+  Serial.println(pirlevel);
+  
+  //Logical part
+  if(gaslevel>200||cel>50||pirlevel==1){
+    tone(buzz,1000,200);
+    digitalWrite(red,HIGH);
+    digitalWrite(green,LOW);
+  }else{
+    noTone(buzz);
+    digitalWrite(red,LOW);
+    digitalWrite(green,HIGH);
+  }
+  delay(1000);
+}
